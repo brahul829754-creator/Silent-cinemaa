@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15131b">
+<title>Silent Cinema</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎧%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+
+  <!-- HOME -->
+  <section id="home" class="view">
+    <header class="brand">
+      <h1>Silent Cinema</h1>
+      <p>One movie. Everyone on their own earbuds.</p>
+    </header>
+
+    <div class="panel">
+      <label for="name">Your name</label>
+      <input id="name" type="text" maxlength="20" autocomplete="nickname" placeholder="What should friends call you?">
+    </div>
+
+    <div class="panel">
+      <h2>Host a movie night</h2>
+      <p class="hint">Pick a movie on your phone. Friends hear its audio live. They don’t need the file.</p>
+      <button id="create" class="btn primary">Start a session</button>
+    </div>
+
+    <div class="panel">
+      <h2>Join friends</h2>
+      <label for="code" class="sr">Session code</label>
+      <input id="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="000000" class="codefield">
+      <button id="join" class="btn">Join and listen</button>
+    </div>
+
+    <p id="homeErr" class="err" role="alert"></p>
+  </section>
+
+  <!-- ROOM -->
+  <section id="room" class="view" hidden>
+    <div class="topbar">
+      <span id="conn" class="pill"><i></i><b>Connecting</b></span>
+      <button id="leave" class="btn ghost small">Leave</button>
+    </div>
+
+    <div class="ticket">
+      <div class="main">
+        <span class="cap">Session code</span>
+        <strong id="roomCode" class="num">······</strong>
+      </div>
+      <div class="stub"><button id="inviteBtn" class="btn primary small">Invite</button></div>
+    </div>
+
+    <!-- host only -->
+    <div class="panel" id="filePanel" hidden>
+      <h2>1. Choose the movie</h2>
+      <p class="hint">Friends hear this movie’s audio live on their own earbuds. Keep this page open and your screen on.</p>
+      <label class="drop" for="file" id="drop"><span id="dropText">Choose a movie file</span></label>
+      <input id="file" type="file" accept="video/*,audio/*" hidden>
+      <p id="finfo" class="finfo"></p>
+    </div>
+
+    <div class="stage" id="stage" hidden>
+      <video id="video" playsinline preload="auto"></video>
+    </div>
+
+    <div class="panel" id="hostCtl" hidden>
+      <h2>2. You control playback</h2>
+      <div class="seek">
+        <span id="tCur" class="num">0:00</span>
+        <input id="seek" type="range" min="0" max="0" step="1" value="0" aria-label="Seek">
+        <span id="tDur" class="num">0:00</span>
+      </div>
+      <div class="transport">
+        <button id="back" class="btn round" aria-label="Back 10 seconds">−10</button>
+        <button id="play" class="btn primary round big" aria-label="Play">▶</button>
+        <button id="fwd" class="btn round" aria-label="Forward 10 seconds">+10</button>
+      </div>
+      <label for="lead" style="margin-top:18px">Audio lead: <b id="lv" class="num">300 ms</b></label>
+      <input id="lead" type="range" min="0" max="1500" step="20" value="300">
+      <p class="hint">Friends hear sound after the picture on your screen? Slide right. Before the picture? Slide left.</p>
+    </div>
+
+    <!-- guest only -->
+    <div class="panel" id="guestCtl" hidden>
+      <h2>Listening</h2>
+      <div class="now">
+        <div class="ring" id="ring"></div>
+        <strong id="gState">Connecting to the host…</strong>
+      </div>
+      <button id="unlock" class="btn primary" hidden>Tap to enable audio</button>
+      <label for="nudge">Add delay to my audio: <b id="nv" class="num">0 ms</b></label>
+      <input id="nudge" type="range" min="0" max="1000" step="10" value="0">
+      <p class="hint">Hearing it before your friends? Slide right to add delay.</p>
+      <button id="resync" class="btn small">Reconnect audio</button>
+    </div>
+
+    <div class="panel">
+      <h2>In this session <span id="cnt" class="num"></span></h2>
+      <ul id="list" class="people"></ul>
+    </div>
+  </section>
+</main>
+<audio id="audio" playsinline></audio>
+
+<dialog id="invite">
+  <h2>Invite friends</h2>
+  <p class="hint">Scan this code, or share the link. Friends don’t need the movie file. They just listen.</p>
+  <div id="qr"></div>
+  <input id="link" type="text" readonly aria-label="Invite link">
+  <div class="two">
+    <button id="copy" class="btn primary small">Copy link</button>
+    <button id="share" class="btn small" hidden>Share…</button>
+  </div>
+  <button id="closeInvite" class="btn ghost small">Close</button>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "silent-cinema",
+  "version": "1.0.0",
+  "description": "Watch a movie together, each person on their own earbuds. Synced play, pause and seek.",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "ws": "^8.18.0" },
+  "license": "MIT"
+}
